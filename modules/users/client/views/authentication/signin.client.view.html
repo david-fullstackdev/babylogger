@@ -1,0 +1,34 @@
+<section ng-cloak layout="column" layout-padding>
+  <br />
+  <img src="/modules/users/client/img/logo.png" class="center logo-img" />
+  <br />
+  <form ng-cloak layout="column" layout-padding name="vm.userForm" ng-submit="vm.signin(vm.userForm.$valid)" novalidate autocomplete="off">
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Username</md-select-label>
+        <input type="text" id="usernameOrEmail" name="usernameOrEmail" ng-model="vm.credentials.usernameOrEmail" required autofocus>
+        <div ng-messages="vm.userForm.usernameOrEmail.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Username or Email is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Password</md-select-label>
+        <input type="password" id="password" name="password" ng-model="vm.credentials.password" required>
+        <div ng-messages="vm.userForm.password.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Password is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <md-input-container>
+      <md-button type="submit" class="md-raised md-primary">Login</md-button>
+    </md-input-container>
+    <md-input-container>
+      <a ui-sref="password.forgot">Forgot Password?</a>
+    </md-input-container>
+  </form>
+</section>
+
+<md-divider class="space no-line"></md-divider>
+

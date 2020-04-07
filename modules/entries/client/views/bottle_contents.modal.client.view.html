@@ -1,0 +1,50 @@
+<md-dialog layout-fill>
+  <form name="childForm" ng-submit="save(childForm.$valid)" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <div>
+          <h2>{{title}}</h2>
+          <span style="margin: 5px 0; font-size: 15px;">{{child.firstName + ' ' + child.lastName}}</span>
+        </div>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-padding class="form-group" show-errors>
+      <p class="md-caption">Edit the bottle content options for this child.</p>
+      <md-list-item>
+        <p> Breastmilk </p>
+      </md-list-item>
+      <md-list-item>
+        <p> Dairy Milk </p>
+      </md-list-item>
+      <md-list-item>
+        <p> Formula </p>
+      </md-list-item>
+      <md-list-item ng-repeat="item in child.bottleContents">
+        <md-button class="md-icon-button md-warn" ng-click="removeBottleContent(item)">
+          <i class="material-icons">clear</i>
+        </md-button>
+        <p> {{item}} </p>
+      </md-list-item>
+      <md-list-item>
+        <md-button class="md-icon-button md-primary" ng-click="addNewBottleContent()">
+          <i class="material-icons">add</i>
+        </md-button>
+        <md-input-container>
+          <input id="newBottleContent" name="newBottleContent" ng-model="newBottleContent">
+        </md-input-container>
+      </md-list-item>
+      <md-divider class="no-line"></md-divider>
+      <md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-raised" ng-click="cancel()" ng-disabled="isLoading">Cancel</md-button>
+      </md-input-container>
+    </md-dialog-content>
+  </form>
+</md-dialog>

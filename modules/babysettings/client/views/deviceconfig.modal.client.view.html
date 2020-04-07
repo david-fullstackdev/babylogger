@@ -1,0 +1,38 @@
+<md-dialog layout-fill>
+  <form name="deviceConfigForm" ng-submit="save(deviceConfigForm.$valid)" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-padding>
+      <h4>Device ID: {{device.deviceId}}</h4>
+      <md-input-container>
+        <span>Device Nickname (optional)</span>
+        <input name="deviceNickName" ng-model="device.deviceNickName">
+        <p class="md-caption">Give your device a nickname if you'd like an easy way to identify which data entries came from this device in reporting.</p>
+      </md-input-container>
+      <div class="form-group" show-errors>
+        <span>Associate with child</span>
+        <md-select ng-model="device.child" required="" name="child" id="child" md-no-asterisk placeholder="Select One">
+          <md-option ng-value>Select One</md-option>
+          <md-option ng-value="item._id" ng-repeat="item in childs">{{item.firstName + ' ' + item.lastName}}</md-option>
+        </md-select>
+        <div ng-messages="deviceConfigForm.child.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Please select a child.</p>
+        </div>
+      </div>
+      <md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-raised md-rounded" ng-click="cancel()" ng-disabled="isLoading">Cancel</md-button>
+      </md-input-container>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,0 +1,173 @@
+.entry-child-photo {
+	top: 2px !important;
+}
+
+.child img {
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	border: 5px solid #FFFFFF;
+	width: 87px;
+}
+
+.float-left {
+	float: left;
+	padding-right: 10px;
+}
+
+.entry-datepicker-container {
+	margin-bottom: -20px;
+	margin-top: 10px;
+}
+
+.entry-datepicker .md-datepicker-button {
+	margin-left: -7px;
+}
+
+.entry-type-select {
+	display: inline-block;
+}
+
+.gray-bg {
+	background-color: rgba(0, 0, 0, 0.06);
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
+}
+
+.datepicker-height {
+	margin-bottom: -20px;
+}
+
+.nurse-side-btn.active {
+	background-color: #8D4C9B !important;
+	color: white !important;
+	font-weight: bold;
+    font-size: 24px;
+    line-height: 1;
+}
+.nurse-side-btn {
+	background-color: white !important;
+	border: 3px solid #8D4C9B;
+	color: #717171 !important;
+	line-height: 1 !important;
+}
+
+.nurse-right-btn {
+	margin-left: 35px;
+}
+
+.nurse-right-btn.has-manual-radio {
+	margin-left: 70px;
+}
+
+.manual-input-group .md-errors-spacer {
+	display: none;
+}
+
+.manual-input-group input[type="text"] {
+	width: 65px;
+}
+
+.manual-input-group md-input-container {
+	/* margin-top: -20px; */
+}
+
+.span-left-duration {
+	margin-left: 15px;
+}
+
+.left-duration-input {
+	margin-left: 10px;
+}
+
+.right-duration-input {
+	margin-left: 30px;
+}
+
+md-radio-group.manual-last-group {
+	display: table;
+	position: absolute;
+	top: 31px;
+	left: 84px;
+}
+
+md-radio-group.manual-last-group md-radio-button {
+	display: table-cell;
+}
+
+md-radio-group.manual-last-group md-radio-button:last-child .md-container {
+	left: 77px;
+}
+
+md-radio-group.manual-last-group md-radio-button:last-child .md-label {
+	margin-left: 107px;
+}
+
+.nurse-side-btn.active {
+	background-color: rgb(255,109,0);
+}
+
+.sleep-entry-btn {
+	width: 60px !important;
+	height: 60px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+md-input-container .md-input {
+	border: 1px solid lightgray;
+	min-height: 40px;
+	    padding: 10px;
+}
+.md-button.md-icon-button {
+	    margin: 0px 13px;
+		    height: 43px !important;
+    width: 43px !important;
+}
+
+md-input-container .md-select-value {
+	border: 1px solid lightgray;
+	min-height: 38px;
+	padding-left: 10px;
+}
+
+a {
+	text-decoration: none;
+    color: #1582F2;
+	}
+
+.md-primary.save {
+	background-color: #37A143 !important;
+	border-radius: 24px;
+}
+
+.md-accent {color: #212121 !important;}
+
+.sleep-entry-btn.md-icon-button {
+	width: 60px !important;
+	height: 60px !important;
+}
+
+.sleep-entry-btn md-icon {
+	width: 58px;
+	height: 58px;
+	margin: 0;
+}
+
+p.md-caption {
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: 0;
+}
+
+.manual-select-box .md-select-value {
+	min-width: 35px;
+	padding-left: 5px;
+	min-height: 30px;
+}
+
+.manual-select-box .md-select-value .md-select-icon {
+	width: 10px;
+}

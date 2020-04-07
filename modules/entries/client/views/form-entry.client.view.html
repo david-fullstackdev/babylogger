@@ -1,0 +1,267 @@
+<section>
+  <form name="form.entryForm" class="form-horizontal entry-form" ng-submit="save(form.entryForm.$valid)" novalidate>
+    <md-dialog-content layout="column" layout-padding class="form-group" >
+      <md-input-container ng-if="entry.type=='nursing' || entry.type=='pumping'" ng-click="editEntry($event, lastEntry)">
+        <span>Last: {{lastEntry.date | date: 'MM/dd/yyyy h:mm a'}}</span>
+        <span ng-if="lastEntry.leftLast">
+           <strong>- Left</strong>
+        </span>
+        <span ng-if="lastEntry.rightLast">
+           <strong>- Right</strong>
+        </span>
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='bottle'" ng-click="editEntry($event, lastEntry)">
+        <span>Last: {{lastEntry.date | date: 'MM/dd/yyyy h:mm a'}} </span>
+           - {{lastEntry.contents}}
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='solidfood'" ng-click="editEntry($event, lastEntry)">
+        <span>Last: {{lastEntry.date | date: 'MM/dd/yyyy h:mm a'}} </span>
+      </md-input-container>
+      <md-list flex ng-if="isSleepType">
+        <md-list-item class="md-2-line no-padding">
+          <div style="margin-right: 16px;">
+            <md-button class="md-icon-button sleep-entry-btn" ng-click="enableAsleepBtn()">
+              <md-icon md-svg-src="./modules/entries/client/img/asleep-inactive-with-outline.svg" ng-if="!enableAsleep"></md-icon>
+              <md-icon md-svg-src="./modules/entries/client/img/asleep-active.svg" ng-if="enableAsleep"></md-icon>
+            </md-button>
+            <p class="font-size-13">Fell Asleep</p>
+          </div>
+          <div class="md-list-item-text" layout="column">
+            <md-input-container class="entry-datepicker-container">
+              <md-datepicker ng-model="entry.date" class="entry-datepicker" ng-disabled="!enableAsleep"></md-datepicker>
+            </md-input-container>
+            <md-input-container>
+              <div class="md-block" >
+                <md-input-container>
+                  <md-select ng-model="primary_entry.hour" ng-disabled="!enableAsleep" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in hours" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container>
+                  <md-select ng-model="primary_entry.minute" ng-disabled="!enableAsleep" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in minutes" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container>
+                  <md-select ng-model="primary_entry.type" ng-disabled="!enableAsleep" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in time_type" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+            </md-input-container>
+          </div>
+        </md-list-item>
+        <hr>
+        <md-list-item class="md-2-line no-padding">
+          <div style="margin-right: 16px;">
+            <md-button class="md-icon-button sleep-entry-btn" ng-click="enableAwakeBtn()">
+              <md-icon md-svg-src="./modules/entries/client/img/awake-inactive-with-outline.svg" ng-if="!enableAwake"></md-icon>
+              <md-icon md-svg-src="./modules/entries/client/img/awake-active.svg" ng-if="enableAwake"></md-icon>
+            </md-button>
+            <p class="font-size-13">Woke Up</p>
+          </div>
+          <div class="md-list-item-text" layout="column">
+            <md-input-container class="entry-datepicker-container">
+              <md-datepicker ng-model="awakeEntry.date" class="entry-datepicker" ng-disabled="!enableAwake"></md-datepicker>
+            </md-input-container>
+            <md-input-container>
+              <div class="md-block" >
+                <md-input-container>
+                  <md-select ng-model="secondary_entry.hour" ng-disabled="!enableAwake" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in hours" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container>
+                  <md-select ng-model="secondary_entry.minute" ng-disabled="!enableAwake" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in minutes" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container>
+                  <md-select ng-model="secondary_entry.type" ng-disabled="!enableAwake" ng-change="changeSleepTime()">
+                    <md-option ng-repeat="item in time_type" ng-value="item">
+                      {{item}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+              </div>
+            </md-input-container>
+          </div>
+        </md-list-item>
+        <md-input-container ng-if="sleepDuration">
+          Duration: {{sleepDuration}}
+        </md-input-container>
+      </md-list>
+      <md-input-container class="entry-datepicker-container" ng-if="entry.type != 'asleep'">
+        <md-datepicker ng-model="entry.date" class="entry-datepicker"></md-datepicker>
+      </md-input-container>
+      <md-input-container ng-if="entry.type != 'asleep'">
+        <div class="md-block" >
+          <md-input-container>
+            <md-select ng-model="primary_entry.hour">
+              <md-option ng-repeat="item in hours" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select ng-model="primary_entry.minute">
+              <md-option ng-repeat="item in minutes" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <span ng-if="entry.type=='nursing' || entry.type=='pumping'">Start Time</span>
+          <md-input-container>
+            <md-select ng-model="primary_entry.type">
+              <md-option ng-repeat="item in time_type" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='nursing' || entry.type=='pumping'">
+        Duration (optional)
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='nursing' || entry.type=='pumping'">
+        <md-button class="md-fab nurse-side-btn" aria-label="Left" ng-click="sideBtnClickEvent('left')" ng-class="{'active': eventBtnClickCount.left>0 && eventBtnClickCount.left%2==1}" ng-disabled="eventBtnClickCount.right>0 && eventBtnClickCount.right%2==1">
+          L
+        </md-button>
+        <span ng-if="!manualEdit && lastSide=='left'">Last</span>
+        <md-button class="md-fab nurse-side-btn nurse-right-btn" aria-label="Right" ng-click="sideBtnClickEvent('right')" ng-class="{'active': eventBtnClickCount.right>0 && eventBtnClickCount.right%2==1, 'has-manual-radio': manualEdit}" ng-disabled="eventBtnClickCount.left>0 && eventBtnClickCount.left%2==1">
+          R
+        </md-button>
+        <span ng-if="!manualEdit && lastSide=='right'">Last</span>
+        <md-radio-group ng-model="entry.entry_manual_last" class="manual-last-group" ng-if="manualEdit" ng-change="changeLastSide()">
+          <md-radio-button value="left" class="md-primary">Last</md-radio-button>
+          <md-radio-button value="right"> Last </md-radio-button>
+        </md-radio-group>
+      </md-input-container>
+      <md-input-container ng-if="(entry.type=='nursing' || entry.type=='pumping') && !manualEdit">
+        <span class="span-left-duration">{{eventDuration.left}}</span>
+        <span ng-style="lastSide=='left' ? {'margin-left': '93px'} : {'margin-left': '58px'}">{{eventDuration.right}}</span>
+      </md-input-container>
+      <md-input-container ng-if="(entry.type=='nursing' || entry.type=='pumping') && !manualEdit" ng-style="lastSide=='left' ? {'padding-left': '93px'} : {'padding-left': '75px'}">
+        {{eventDuration.total}}
+      </md-input-container>
+      <div ng-if="(entry.type=='nursing' || entry.type=='pumping') && manualEdit" class="manual-input-group">
+        <md-input-container class="left-duration-input">
+          <div>
+            <md-input-container>
+              <md-select ng-model="manualDuration.leftMinute" class="manual-select-box" ng-change="selectManualTime()">
+                <md-option ng-repeat="item in manualIntervals" ng-value="item">
+                  {{item}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            :
+            <md-input-container>
+              <md-select ng-model="manualDuration.leftSecond" class="manual-select-box" ng-change="selectManualTime()">
+                <md-option ng-repeat="item in manualIntervals" ng-value="item">
+                  {{item}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+        </md-input-container>
+        <md-input-container class="right-duration-input">
+          <div>
+            <md-input-container>
+              <md-select ng-model="manualDuration.rightMinute" class="manual-select-box" ng-change="selectManualTime()">
+                <md-option ng-repeat="item in manualIntervals" ng-value="item">
+                  {{item}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+            :
+            <md-input-container>
+              <md-select ng-model="manualDuration.rightSecond" class="manual-select-box" ng-change="selectManualTime()">
+                <md-option ng-repeat="item in manualIntervals" ng-value="item">
+                  {{item}}
+                </md-option>
+              </md-select>
+            </md-input-container>
+          </div>
+        </md-input-container>
+      </div>
+      <md-input-container ng-if="(entry.type=='nursing' || entry.type=='pumping') && manualEdit" style="padding-left: 120px;">
+        {{eventDuration.total}}
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='pumping'">
+        <div class="md-block" >
+          <md-input-container>
+            <md-select ng-model="entry.leftQuantity">
+              <md-option ng-repeat="item in quantities" ng-value="item">
+                {{item==0?'':item}} oz
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container ng-style="lastSide=='left' ? {'margin-left': '60px'} : {'margin-left': '30px'}">
+            <md-select ng-model="entry.rightQuantity">
+              <md-option ng-repeat="item in quantities" ng-value="item">
+                {{item==0?'':item}}  oz
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='bottle'">
+        <md-select ng-model="entry.contents" style="margin-right: 50px;">
+          <md-option ng-value="null">Select Contents</md-option>
+          <md-option ng-repeat="item in bottleContents" ng-value="item">
+            {{item}}
+          </md-option>
+        </md-select>
+        <md-button class="md-icon-button" style="position: absolute; top: 10px; right: 0px;" ng-click="editBottleContents($event)">
+          <img src="./modules/entries/client/img/u93.png" width="24">
+        </md-button>
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='bottle'">
+        <div class="md-block" >
+          <md-input-container>
+            <md-select ng-model="entry.quantity">
+              <md-option ng-repeat="item in bottleQuantities" ng-value="item">
+                {{item}} oz
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-input-container>
+      <md-input-container ng-if="(entry.type=='nursing' || entry.type=='pumping') && !manualEdit">
+        <a href="#" ng-click="editDurationManual(true)">Manual Edit</a>
+      </md-input-container>
+      <md-input-container ng-if="(entry.type=='nursing' || entry.type=='pumping') && manualEdit">
+        <a href="#" ng-click="editDurationManual(false)">Cancel Manual Edit</a>
+      </md-input-container>
+      <md-input-container ng-if="entry.type=='miscellaneous'">
+        <input id="miscellaneous" name="miscellaneous" ng-model="entry.miscellaneousLabel">
+      </md-input-container>
+      <p class="md-caption" ng-if="entry.type=='miscellaneous'">Want this to default to something else? <a href="#" ng-click="editChildLabel($event)">Edit default label</a></p>
+      <md-input-container>
+        <span>Notes</span>
+        <textarea ng-model="entry.note" md-maxlength="70" rows="3" md-select-on-focus maxlength="70"></textarea>
+      </md-input-container>
+      <md-input-container style="text-align: center;">
+        <md-button class="md-raised md-primary save" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-accent" ng-disabled="isLoading" ng-click="cancelEntryEdit()">Cancel</md-button>
+      </md-input-container>
+      <md-input-container ng-show="entry._id" style="text-align: center;">
+        <md-button class="md-warn" ng-click="deleteEntry($event)">Delete this entry</md-button>
+      </md-input-container>
+    </md-dialog-content>
+  </form>
+
+</section>

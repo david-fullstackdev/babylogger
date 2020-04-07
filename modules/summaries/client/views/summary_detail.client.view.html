@@ -1,0 +1,613 @@
+<section class="detail-report-page">
+  <swiper initial-slide="{{initialChildIndex}}" ng-if="isLoadedData" on-transition-end="changeSlider">
+    <slides>
+      <slide ng-repeat="child in childlist">
+        <md-toolbar class="child"
+                    ng-class="{'pink': !child.gender||child.gender==''||child.gender=='female', 'blue': child.gender=='male'}">
+          <div layout="row" layout-margin>
+            <div flex="75">
+              <md-divider class="no-line space"></md-divider>
+              <div class="md-title md-block">{{child.firstName + ' ' + child.lastName}}</div>
+            </div>
+            <div flex></div>
+            <div flex="25">
+              <img ng-src="{{ child.imageURL }}" class="circle child-photo" ng-click="navigatePage('child-landing')" />
+            </div>
+          </div>
+        </md-toolbar>
+        <div layout="row" layout-margin style="margin-top: 0;">
+          <div flex>
+            <div class="md-subhead md-block">{{getAgeOfBirth(child.birthDay)}}</div>
+          </div>
+        </div>
+      </slide>
+    </slides>
+  </swiper>
+  <div layout="row" layout-padding>
+    <md-input-container flex="100">
+      Detail Report
+    </md-input-container>
+    <md-divider flex="100" class="no-line"></md-divider>
+  </div>
+  <div layout="row" layout-xs="column" layout-padding>
+    <div flex>
+      <md-input-container>
+        Date Range
+      </md-input-container>
+      <div>
+        <md-input-container class="datepicker-height">
+          <md-datepicker ng-model="startDate" md-placeholder="Enter date" ng-change="calculateSummary(child)"></md-datepicker>
+        </md-input-container>
+        <md-input-container class="datepicker-height">
+          <md-datepicker ng-model="endDate" md-placeholder="Enter date" ng-change="calculateSummary(child)"></md-datepicker>
+        </md-input-container>
+      </div>
+    </div>
+    <!--<div flex>
+      <md-input-container>
+        Select up to 2 events
+      </md-input-container>
+      <div>
+        <md-input-container>
+          <md-select ng-model="selectedEvent1" style="min-width: 150px;">
+            <md-option value="null">Select</md-option>
+            <md-option value="nursing">Nursing</md-option>
+            <md-option value="pumping">Pumping</md-option>
+            <md-option value="bottle">Bottles</md-option>
+            <md-option value="solidfood">Solid Food</md-option>
+            <md-option value="wet">Wet Diapers</md-option>
+            <md-option value="dirty">Dirty Diapers</md-option>
+            <md-option value="asleep">Sleep</md-option>
+            <md-option value="miscellaneous">Miscellaneous</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <md-select ng-model="selectedEvent2" style="min-width: 150px;">
+            <md-option value="null">Select</md-option>
+            <md-option value="nursing">Nursing</md-option>
+            <md-option value="pumping">Pumping</md-option>
+            <md-option value="bottle">Bottles</md-option>
+            <md-option value="solidfood">Solid Food</md-option>
+            <md-option value="wet">Wet Diapers</md-option>
+            <md-option value="dirty">Dirty Diapers</md-option>
+            <md-option value="asleep">Sleep</md-option>
+            <md-option value="miscellaneous">Miscellaneous</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <md-button class="md-raised md-primary save" type="button" ng-click="calculateSummary(child)">Go</md-button>
+        </md-input-container>
+      </div>
+    </div>-->
+  </div>
+  <div layout="row" layout-padding>
+    <nvd3 options="options" data="data" flex api="api" id="detail-chart"></nvd3>
+  </div>
+  <div layout="row" layout-md="column" class="legend" layout-align="center center" layout-wrap>
+    <md-button ng-click="legendItemClick('nursing')">
+        <span class="legend-circle nursing-circle" ng-class="{'active': selectedLegendItem.nursing.selected}"></span>
+        Nursing
+    </md-button>
+    <md-button ng-click="legendItemClick('pumping')">
+        <span class="legend-circle pumping-circle" ng-class="{'active': selectedLegendItem.pumping.selected}"></span>
+        Pumping
+    </md-button>
+    <md-button ng-click="legendItemClick('solidfood')">
+        <span class="legend-circle solidfood-circle" ng-class="{'active': selectedLegendItem.solidfood.selected}"></span>
+        Solid Food
+    </md-button>
+    <md-button ng-click="legendItemClick('wet')">
+        <span class="legend-circle wet-circle" ng-class="{'active': selectedLegendItem.wet.selected}"></span>
+        Wet
+    </md-button>
+    <md-button ng-click="legendItemClick('dirty')">
+        <span class="legend-circle dirty-circle" ng-class="{'active': selectedLegendItem.dirty.selected}"></span>
+        Dirty
+    </md-button>
+    <md-button ng-click="legendItemClick('bottle')">
+        <span class="legend-circle bottle-circle" ng-class="{'active': selectedLegendItem.bottle.selected}"></span>
+        Bottle
+    </md-button>
+    <md-button ng-click="legendItemClick('miscellaneous')">
+        <span class="legend-circle miscellaneous-circle" ng-class="{'active': selectedLegendItem.miscellaneous.selected}"></span>
+        Miscellaneous
+    </md-button>
+    <md-button ng-click="legendItemClick('sleep')">
+        <span class="legend-circle sleep-circle" ng-class="{'active': selectedLegendItem.sleep.selected}"></span>
+        Sleep
+    </md-button>
+  </div>
+  <!--<div layout="row" layout-wrap layout-padding>
+    <div flex="50" ng-repeat="event in showEventList" ng-hide="event.disabled">
+      <md-button class="md-fab md-primary summary-entry-btn margin-right-10 float-left" style="border: 3px solid;"
+                 ng-style="{'border-color': resourceList[event.key].color}">
+        <md-icon md-svg-src="./modules/childs/client/img/icons/{{resourceList[event.key].path}}"></md-icon>
+      </md-button>
+      <h3>{{eventList[event.key]}}</h3>
+      <div class="clear"></div>
+      <md-input-container ng-if="event.key == 'bottle'">
+        <md-select ng-model="selectChoice.bottleContent" style="min-width: 150px;">
+          <md-option value="All">All</md-option>
+          <md-option ng-repeat="item in child.bottleContents" ng-if="item != null" ng-value="item">{{item}}</md-option>
+        </md-select>
+      </md-input-container>
+      <div layout="row" layout-align="center top" layout-md="column" layout-sm="column" layout-xs="column">
+        <div flex>
+          <p>{{resourceList[event.key].label}}</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody ng-if="event.key != 'bottle' && event.key != 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[event.key].day + child.summary.avg[event.key].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[event.key].day}}</td>
+                <td class="bold">{{child.summary.avg[event.key].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[event.key]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="event.key == 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day + child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].day + child.summary.avg['sleep'].night)%60}}m
+                </td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{(child.summary.avg['sleep'].day)%60}}m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].night)%60}}m</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary['sleep']">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{Math.floor((item.day + item.night)/60)}}h {{(item.day + item.night)%60}}m</td>
+                <td>{{Math.floor((item.day)/60)}}h {{(item.day)%60}}m</td>
+                <td>{{Math.floor((item.night)/60)}}h {{(item.night)%60}}m</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="event.key == 'bottle'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].day + child.summary.avg[event.key][selectChoice.bottleContent].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].day}}</td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[event.key][selectChoice.bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="event.key == 'nursing' || event.key == 'pumping'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[event.key].duration.total}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[event.key].duration.left}}</td>
+                <td class="bold">R {{child.summary.avg[event.key].duration.right}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="event.key == 'pumping'">
+          <p>Average Volume</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[event.key].volume.total}} oz</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[event.key].volume.left}} oz</td>
+                <td class="bold">R {{child.summary.avg[event.key].volume.right}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="event.key == 'bottle'">
+          <p>Ounces Per Day</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].ounce_day + child.summary.avg[event.key][selectChoice.bottleContent].ounce_night}} oz
+                </td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].ounce_day}} oz</td>
+                <td class="bold">{{child.summary.avg[event.key][selectChoice.bottleContent].ounce_night}} oz</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[event.key][selectChoice.bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.ounce_day + item.ounce_night}} oz</td>
+                <td>{{item.ounce_day}} oz</td>
+                <td>{{item.ounce_night}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="event.key == 'asleep'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{child.summary.avg['sleep'].day%60}} m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{child.summary.avg['sleep'].night%60}} m</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  <!--<div layout="row" layout-xs="column" layout-padding>
+    <div flex ng-if="selectedEvent1!='null'">
+      <md-button class="md-fab md-primary summary-entry-btn margin-right-10 float-left" style="border: 3px solid;"
+                 ng-style="{'border-color': resourceList[selectedEvent1].color}">
+        <md-icon md-svg-src="./modules/childs/client/img/icons/{{resourceList[selectedEvent1].path}}"></md-icon>
+      </md-button>
+      <h3>{{eventList[selectedEvent1]}}</h3>
+      <div class="clear"></div>
+      <md-input-container ng-if="selectedEvent1 == 'bottle'">
+        <md-select ng-model="bottleContent" style="min-width: 150px;">
+          <md-option value="All">All</md-option>
+          <md-option ng-repeat="item in child.bottleContents" ng-if="item != null" ng-value="item">{{item}}</md-option>
+        </md-select>
+      </md-input-container>
+      <div layout="row" layout-align="center top" layout-md="column" layout-sm="column" layout-xs="column">
+        <div flex>
+          <p>{{resourceList[selectedEvent1].label}}</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody ng-if="selectedEvent1 != 'bottle' && selectedEvent1 != 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1].day + child.summary.avg[selectedEvent1].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent1].day}}</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent1]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="selectedEvent1 == 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day + child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].day + child.summary.avg['sleep'].night)%60}}m
+                </td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{(child.summary.avg['sleep'].day)%60}}m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].night)%60}}m</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary['sleep']">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{Math.floor((item.day + item.night)/60)}}h {{(item.day + item.night)%60}}m</td>
+                <td>{{Math.floor((item.day)/60)}}h {{(item.day)%60}}m</td>
+                <td>{{Math.floor((item.night)/60)}}h {{(item.night)%60}}m</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="selectedEvent1 == 'bottle'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].day + child.summary.avg[selectedEvent1][bottleContent].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].day}}</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent1][bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent1 == 'nursing' || selectedEvent1 == 'pumping'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[selectedEvent1].duration.total}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[selectedEvent1].duration.left}}</td>
+                <td class="bold">R {{child.summary.avg[selectedEvent1].duration.right}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent1 == 'pumping'">
+          <p>Average Volume</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[selectedEvent1].volume.total}} oz</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[selectedEvent1].volume.left}} oz</td>
+                <td class="bold">R {{child.summary.avg[selectedEvent1].volume.right}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent1 == 'bottle'">
+          <p>Ounces Per Day</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].ounce_day + child.summary.avg[selectedEvent1][bottleContent].ounce_night}} oz
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].ounce_day}} oz</td>
+                <td class="bold">{{child.summary.avg[selectedEvent1][bottleContent].ounce_night}} oz</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent1][bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.ounce_day + item.ounce_night}} oz</td>
+                <td>{{item.ounce_day}} oz</td>
+                <td>{{item.ounce_night}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent1 == 'asleep'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{child.summary.avg['sleep'].day%60}} m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{child.summary.avg['sleep'].night%60}} m</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div flex ng-if="selectedEvent2!='null'">
+      <md-button class="md-fab md-primary summary-entry-btn margin-right-10 float-left" style="border: 3px solid;"
+                 ng-style="{'border-color': resourceList[selectedEvent2].color}">
+        <md-icon md-svg-src="./modules/childs/client/img/icons/{{resourceList[selectedEvent2].path}}"></md-icon>
+      </md-button>
+      <h3>{{eventList[selectedEvent2]}}</h3>
+      <div class="clear"></div>
+      <md-input-container ng-if="selectedEvent2 == 'bottle'">
+        <md-select ng-model="bottleContent" style="min-width: 150px;">
+          <md-option value="All">All</md-option>
+          <md-option ng-repeat="item in child.bottleContents" ng-if="item != null" ng-value="item">{{item}}</md-option>
+        </md-select>
+      </md-input-container>
+      <div layout="row" layout-align="center top" layout-md="column" layout-sm="column" layout-xs="column">
+        <div flex>
+          <p>{{resourceList[selectedEvent2].label}}</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody ng-if="selectedEvent2 != 'bottle' && selectedEvent2 != 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2].day + child.summary.avg[selectedEvent2].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent2].day}}</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent2]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="selectedEvent2 == 'asleep'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day + child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].day + child.summary.avg[selectedEvent2].night)%60}}m
+                </td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{(child.summary.avg['sleep'].day)%60}}m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{(child.summary.avg['sleep'].night)%60}}m</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary['sleep']">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{Math.floor((item.day + item.night)/60)}}h {{(item.day + item.night)%60}}m</td>
+                <td>{{Math.floor((item.day)/60)}}h {{(item.day)%60}}m</td>
+                <td>{{Math.floor((item.night)/60)}}h {{(item.night)%60}}m</td>
+              </tr>
+              </tbody>
+              <tbody ng-if="selectedEvent2 == 'bottle'">
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].day + child.summary.avg[selectedEvent2][bottleContent].night}}
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].day}}</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].night}}</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent2][bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.day + item.night}}</td>
+                <td>{{item.day}}</td>
+                <td>{{item.night}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent2 == 'nursing' || selectedEvent2 == 'pumping'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[selectedEvent2].duration.total}}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[selectedEvent2].duration.left}}</td>
+                <td class="bold">R {{child.summary.avg[selectedEvent2].duration.right}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent2 == 'pumping'">
+          <p>Average Volume</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th colspan="2" style="border: none;">{{child.summary.avg[selectedEvent2].volume.total}} oz</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">L {{child.summary.avg[selectedEvent2].volume.left}} oz</td>
+                <td class="bold">R {{child.summary.avg[selectedEvent2].volume.right}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent2 == 'bottle'">
+          <p>Ounces Per Day</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">Avg</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].ounce_day + child.summary.avg[selectedEvent2][bottleContent].ounce_night}} oz
+                </td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].ounce_day}} oz</td>
+                <td class="bold">{{child.summary.avg[selectedEvent2][bottleContent].ounce_night}} oz</td>
+              </tr>
+              <tr ng-repeat="item in child.summary.summary[selectedEvent2][bottleContent]">
+                <td>{{item.logDate | date: 'M/d'}}</td>
+                <td>{{item.ounce_day + item.ounce_night}} oz</td>
+                <td>{{item.ounce_day}} oz</td>
+                <td>{{item.ounce_night}} oz</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div flex ng-if="selectedEvent2 == 'asleep'">
+          <p>Average Duration</p>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Day</th>
+                <th>Night</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].day)/60)}}h {{child.summary.avg['sleep'].day%60}} m</td>
+                <td class="bold">{{Math.floor((child.summary.avg['sleep'].night)/60)}}h {{child.summary.avg['sleep'].night%60}} m</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  <!--<div layout="row" layout-margin>
+    <md-button class="md-fab md-mini" ng-click="openBottomSheet()">
+      <md-icon md-font-set="material-icons"> launch</md-icon>
+    </md-button>
+    <p class="md-subhead" style="line-height: 40px;">Share</p>
+  </div>-->
+</section>

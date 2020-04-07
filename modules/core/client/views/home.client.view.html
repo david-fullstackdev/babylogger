@@ -1,0 +1,8 @@
+<section ng-cloak layout="column" layout-padding>
+  <p>Welcome {{vm.authentication.user.displayName}}! It looks like you need to set things up for your new device.</p>
+  <p>Device ID: {{vm.authentication.user.currentDeviceId}}</p>
+  <div ng-if="vm.authentication.user">
+    <p><a ui-sref="babysettings">Go to device setup</a></p>
+    <p><a href="">I'll do this later. Go to the homepage</a></p>
+  </div>
+</section>

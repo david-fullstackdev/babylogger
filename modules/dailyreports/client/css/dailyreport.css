@@ -1,0 +1,81 @@
+.calendar-tabs md-tab-item:nth-child(1) {
+	text-align: left;
+}
+.calendar-tabs md-tab-item:nth-child(3) {
+	text-align: right;
+}
+
+.daily-list {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.daily-list .has-note,
+.daily-list .has-note .md-list-item-inner {
+	align-items: flex-start;
+}
+
+.daily-list .green-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #6ED175;
+	border-radius: 9px;
+	display: block;
+	position: relative;
+	left: 0;
+	top: 0;
+}
+
+.daily-list .gold-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #FDCC42;
+	border-radius: 9px;
+	display: block;
+}
+
+.daily-list .blue-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #4F85C4;
+	border-radius: 9px;
+	display: block;
+}
+
+.daily-list .orange-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #EC7F52;
+	border-radius: 9px;
+	display: block;
+}
+
+.daily-list .purple-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #A531EA;
+	border-radius: 9px;
+	display: block;
+}
+
+.daily-list .red-circle {
+	width: 18px;
+	height: 18px;
+	margin: 6px auto;
+	background-color: #FF0B35;
+	border-radius: 9px;
+	display: block;
+}
+
+.daily-report-date {
+	line-height: 50px;
+}
+
+.daily-item .md-button {
+	padding: 0 8px;
+}

@@ -1,0 +1,127 @@
+.blue {background-color: #4F85C4 !important;}
+
+.pink {background-color: #FE9A9A !important;}
+
+.right {display: block; text-align: right;}
+
+.float-right {float: right;}
+
+.circle {border-radius: 50%;}
+
+.thick {border-width: 3px;}
+
+.bottle .thick{border-color: #4BB854;}
+
+.diaper-1 .thick {border-color: #FDC432;}
+
+.diaper-2 .thick {border-color: #FDAA46;}
+
+.sleep .thick, .wake .thick {border-color: #3A80C6;}
+
+.miscellaneous .thick {border-color: #A531EA;}
+
+.rotated-text {
+	border: 2px solid #3A80C6;
+	border-radius: 5px;
+	display: inline-block;
+	white-space: nowrap;
+	-webkit-transform: translate(1em,0) rotate(270deg);
+	-moz-transform: translate(1em,0) rotate(270deg);
+	-o-transform: translate(1em,0) rotate(270deg);
+	transform: translate(1em,0) rotate(270deg);
+	-webkit-transform-origin: 0 0;
+	-moz-transform-origin: 0 0;
+	-o-transform-origin: 0 0;
+	transform-origin: 0 0;
+	-ms-transform: none;
+	-ms-transform-origin: none;
+	-ms-writing-mode: tb-rl;
+	margin-top: 227px;
+	line-height: 24px;
+	width: 190px;
+	height: 24px;
+	text-align: center;
+}
+.rotated-text:before {
+	content: "";
+	float: left;
+	margin-top: 100%;
+}
+md-toolbar.child > div {
+	margin-bottom: 0;
+}
+.child .md-title {
+	font-size: 23px;
+	line-height: 1;
+    padding-top: 0px;
+	font-weight: 400;
+}
+
+.child img {
+	position: absolute;
+	right: 20px;
+	top: 10px;
+	border: 13px solid #FFFFFF;
+	width: 140px;
+}
+
+.action img{width: 100%;}
+
+.ellipsis {
+	overflow: hidden; text-overflow: ellipsis;
+}
+
+md-list-item img {
+	margin-top: 0;
+}
+
+.swiper-slide {
+	display: table;
+	text-align: left;
+}
+
+.child-entry-btn {
+	width: 80px !important;
+	height: 80px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background-color: white !important;
+	box-shadow: none !important;
+}
+.child-entry-btn md-icon {
+	width: 55px;
+    height: 55px;
+    margin-top: 10px;
+	color: #717171 !important;
+}
+
+.warning-icon {
+	color: #f18c07;
+}
+
+.md-small-label {
+	font-size: 12px;
+	line-height: 17px;
+	color: #808080;
+}
+
+.md-normal-label {
+	font-size: 13px;
+	line-height: 17px;
+}
+
+.child-landing .action {
+	display: table;
+}
+
+.child-landing .action .event-label {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.ellipsis-text{
+	max-width: 60px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

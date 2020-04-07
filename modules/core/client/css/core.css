@@ -1,0 +1,260 @@
+body,
+md-content.md-default-theme,
+md-content {
+	background-color: rgb(255, 255, 255);
+	color: rgba(0, 0, 0, 0.87);
+}
+
+input:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+
+md-toolbar.md-default-theme.md-hue-2:not(.md-menu-toolbar),
+md-toolbar.md-hue-2:not(.md-menu-toolbar) {
+	background-color: rgb(255, 255, 255);
+	color: #606060;
+}
+.md-rounded {
+	border-radius: 24px;
+	padding-left: 15px;
+    padding-right: 15px;
+}
+.entry-header {
+	height: 80px;
+	max-height: 80px;
+}
+
+.entry-header>md-list-item {
+	margin-top: 15px;
+}
+
+.entry-header h2 {
+	font-size: 26px;
+	line-height: 1.2;
+	color: rgba(0, 0, 0, 0.87);
+}
+
+.entry-header p {
+	font-size: 16px !important;
+	color: rgba(0, 0, 0, 0.87);
+	line-height: 1.3 !important;
+	font-weight: normal !important;
+}
+
+md-toolbar.md-default-theme.md-hue-2:not(.md-menu-toolbar) md-icon,
+md-toolbar.md-hue-2:not(.md-menu-toolbar) md-icon {
+	color: #606060;
+	fill: #606060;
+}
+
+.gray-color {
+	color: rgba(0, 0, 0, 0.54);
+}
+
+.menu-active div.md-button {
+	color: rgb(33, 150, 243);
+}
+
+.content {
+	margin-top: 50px;
+}
+
+.undecorated-link:hover {
+	text-decoration: none;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+	display: none !important;
+}
+
+.header-profile-image {
+	border-radius: 50%;
+	height: 28px;
+	margin-right: 5px;
+	opacity: 0.8;
+	width: 28px;
+}
+
+.open .header-profile-image,
+a:hover .header-profile-image {
+	opacity: 1;
+}
+
+.user-header-dropdown-toggle {
+	padding-bottom: 11px !important;
+	padding-top: 11px !important;
+}
+
+.user-primary-account {
+	font-size: 30px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.error-text {
+	display: none;
+}
+
+.has-error .help-block.error-text {
+	display: block;
+}
+
+.has-error .help-inline.error-text {
+	display: inline;
+}
+
+.baby-navbar {
+	background-image: none;
+	background-color: #4B84C5;
+	border-color: #4B84C5;
+}
+
+.navbar-brand {
+	color: #ffffff;
+	background-image: url(../img/logo.png);
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+.navbar-brand h2 {
+	font-size: 16px;
+	padding: 10px 0 10px 27px;
+}
+
+.navbar-brand span {
+	vertical-align: middle;
+}
+
+.baby-navbar .navbar-nav>li>a {
+	color: #ffffff;
+}
+
+.baby-navbar .navbar-nav>.open>a,
+.baby-navbar .navbar-nav>.active>a,
+.baby-navbar .navbar-nav>.open>a,
+.baby-navbar .navbar-nav>.open>a:hover,
+.baby-navbar .navbar-nav>.open>a:focus,
+.baby-navbar .navbar-nav>.active>a:hover,
+.baby-navbar .navbar-nav>.active>a:focus {
+	background-image: none;
+	background-color: #428bca;
+}
+
+.baby-navbar-user {
+	background-image: none;
+	background-color: #ffffff;
+}
+
+.baby-navbar-user .navbar-brand {
+	color: #4B84C5;
+}
+
+.baby-navbar-user .navbar-nav>li>a {
+	color: #4B84C5;
+}
+
+@media (min-width: 768px) {
+	.navbar-toggle {
+		display: none !important;
+	}
+}
+
+.navbar-toggle {
+	margin-top: 5px !important;
+	margin-right: 15px !important;
+	margin-bottom: 5px !important;
+}
+
+.navbar-toggle md-icon {
+	color: #ffffff;
+}
+
+md-content {
+	overflow-x: hidden;
+}
+
+.child-photo {
+	cursor: pointer;
+}
+
+.bold {
+	font-weight: bold !important;
+}
+
+.no-padding {
+	padding: 0 !important;
+}
+
+md-input-container .md-input,
+md-select,
+md-checkbox {
+	font-size: 1em;
+}
+
+md-datepicker .md-datepicker-button {
+	left: 135px;
+}
+
+md-datepicker .md-datepicker-input-container {
+	left: -66px;
+}
+
+.md-toolbar-tools.nursing {
+	border-top: 4px solid #AB5ABD;
+}
+
+.md-toolbar-tools.pumping {
+	border-top: 4px solid #AB5ABD;
+}
+
+.md-toolbar-tools.bottle {
+	border-top: 4px solid #67C36B;
+}
+
+.md-toolbar-tools.solidfood {
+	border-top: 4px solid #67C36B;
+}
+
+.md-toolbar-tools.wet {
+	border-top: 4px solid #FECA4B;
+}
+
+.md-toolbar-tools.dirty {
+	border-top: 4px solid #FEAB73;
+}
+
+.md-toolbar-tools.asleep {
+	border-top: 4px solid #45B2FF;
+}
+
+.md-toolbar-tools.miscellaneous {
+	border-top: 4px solid #E187AD;
+}
+
+.img-size-60 {
+	width: 60px !important;
+	height: 60px !important;
+}
+
+.no-margin {
+	margin: 0 !important;
+}
+
+.logo-img {
+	width: 350px;
+}
+
+@media (max-width: 365px) {
+	.logo-img {
+		width: 100%;
+	}
+	md-input-container {
+		padding: 0 !important;
+	}
+}

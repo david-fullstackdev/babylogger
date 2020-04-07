@@ -1,0 +1,91 @@
+<section>
+  <md-subheader class="md-no-sticky md-headline"><strong>Children</strong></md-subheader>
+  <div layout="row" layout-margin>
+    <div flex="50">
+      Name
+    </div>
+    <div flex="50">
+      DOB
+    </div>
+  </div>
+  <div layout="row" layout-margin ng-repeat="child in vm.childlist">
+    <div flex="50">
+      <md-list-item>
+        <md-button class="link md-primary" ng-click="vm.showChildFormDialog($event, child)">{{ child.firstName + ' ' + child.lastName }}</md-button>
+      </md-list-item>
+    </div>
+    <div flex="50">
+      <md-list-item class="no-padding">
+        <span class="">{{child.birthDay}}</span>
+        <img alt="{{ child.firstName + ' ' + child.lastName }}" ng-src="{{ child.imageURL }}" class="md-avatar md-left-padding" />
+      </md-list-item>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50">
+      <md-button class="md-raised md-primary" ng-click="vm.showChildFormDialog($event)">Add Child</md-button>
+    </div>
+    <div flex="50">
+
+    </div>
+  </div>
+</section>
+<md-divider class="space"></md-divider>
+<section>
+  <md-subheader class="md-no-sticky md-headline"><strong>Devices</strong></md-subheader>
+  <div layout="row" layout-margin>
+    <div flex="50">
+      Device ID
+    </div>
+    <div flex="50">
+      Child
+    </div>
+  </div>
+  <div layout="row" layout-margin ng-repeat="device in vm.deviceList">
+    <div flex="50">
+      <md-list-item>
+        <md-button class="link md-primary" ng-click="vm.showDeviceConfigureDialog($event, device)">{{device.deviceId}}</md-button>
+      </md-list-item>
+    </div>
+    <div flex="50">
+      <md-list-item class="no-padding">
+        {{device.child.firstName + ' ' + device.child.lastName}}
+      </md-list-item>
+    </div>
+  </div>
+</section>
+<md-divider class="space"></md-divider>
+<section>
+  <md-subheader class="md-no-sticky md-headline"><strong>Users</strong></md-subheader>
+  <div layout="row" layout-margin>
+    <div flex="50">
+      Name
+    </div>
+    <div flex="50">
+      Child(ren)
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50">
+      <md-button class="link md-primary" ng-click="vm.editProfile($event)">{{vm.authentication.user.displayName}}</md-button>
+    </div>
+  </div>
+  <div layout="row" layout-margin ng-repeat="item in vm.additionalUsers">
+    <div flex="50">
+      <md-button class="link md-primary" ng-click="vm.showAssociatedUserDialog($event, item)">{{item.displayName}}</md-button>
+    </div>
+    <div flex="50">
+      <span ng-repeat="child in item.children">
+        {{child.firstName + ' ' + child.lastName}}
+        <span ng-if="$index < item.children.length-1">,</span>
+      </span>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <md-button class="md-raised md-primary" ng-click="vm.showAssociatedUserDialog($event)">Add User</md-button>
+  </div>
+</section>
+<!--<md-divider class="space"></md-divider>
+<md-button class="md-raised md-primary">Save</md-button>
+<md-button class="md-raised">Cancel</md-button>-->
+<md-divider class="space no-line"></md-divider>

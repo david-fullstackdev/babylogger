@@ -1,0 +1,41 @@
+{
+  "name": "angular-ui-swiper",
+  "version": "2.3.6",
+  "authors": [
+    "James Meyer <james@swiftgrid.io>"
+  ],
+  "description": "Most modern mobile touch slider for angular js",
+  "main": [
+    "dist/angular-ui-swiper.js",
+    "dist/angular-ui-swiper.css"
+  ],
+  "moduleType": [],
+  "keywords": [
+    "swiper",
+    "slider",
+    "touch",
+    "mobile",
+    "modern",
+    "angularjs"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nebulr/ui-swiper",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src"
+  ],
+  "_release": "2.3.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.3.6",
+    "commit": "4a44f043d41ec60021478d09ef038a9021822f79"
+  },
+  "_source": "https://github.com/nebulr/ui-swiper.git",
+  "_target": "~2.3.6",
+  "_originalSource": "angular-ui-swiper",
+  "_direct": true
+}

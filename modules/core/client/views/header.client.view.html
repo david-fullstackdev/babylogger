@@ -1,0 +1,65 @@
+<div id="sideNavContainer" ng-controller="HeaderController as vm" layout="row" ng-cloak>
+  <md-toolbar class="md-hue-2" ng-if="vm.authentication.user">
+    <div class="md-toolbar-tools" ng-if="vm.currentState !='entries.create' && vm.currentState !='entries.edit'">
+      <a ui-sref="home" class="navbar-brand">
+        <h2>
+          <span>Baby Logger</span>
+        </h2>
+      </a>
+      <span flex></span>
+      <md-menu show-gt-sm md-position-mode="target-right target" >
+        <md-button aria-label="Sample Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+          <md-icon md-menu-origin class="material-icons">menu</md-icon>
+        </md-button>
+        <md-menu-content width="4" >
+          <md-content>
+            <md-list-item ng-click="vm.navigatePage('child-landing')" ng-class="{'menu-active' : vm.isSectionSelected('child-landing')}">
+              <p>Home</p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('dailyreports')" ng-class="{'menu-active' : vm.isSectionSelected('dailyreports')}">
+              <p>Daily List</p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('summaries')" ng-class="{'menu-active' : vm.isSectionSelected('summaries')}">
+              <p>Pediatrician Summary</p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('summarydetail')" ng-class="{'menu-active' : vm.isSectionSelected('summarydetail')}">
+              <p>Detail Report</p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('babysettings')" ng-class="{'menu-active' : vm.isSectionSelected('babysettings')}">
+              <p>Settings</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ng-repeat="item in vm.accountMenu.items" ng-click="vm.navigatePage(item.state)" ng-show="vm.authentication.user" ng-class="{'menu-active' : vm.isSectionSelected(item.state)}">
+              <p> {{item.title}} </p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ng-click="vm.navigatePage('signout')" ng-show="vm.authentication.user">
+              <ng-md-icon size="24" icon="logout" class="gray-color"></ng-md-icon>
+              <p> Sign Out </p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('authentication.signin')" ng-hide="vm.authentication.user">
+              <ng-md-icon size="24" icon="login" class="gray-color"></ng-md-icon>
+              <p> Sign In </p>
+            </md-list-item>
+            <md-list-item ng-click="vm.navigatePage('authentication.signup')" ng-hide="vm.authentication.user">
+              <md-icon md-font-set="material-icons"> person_add </md-icon>
+              <p> Sign Up </p>
+            </md-list-item>
+          </md-content>
+        </md-menu-content>
+      </md-menu>
+    </div>
+    <div class="md-toolbar-tools entry-header" ng-if="vm.currentState =='entries.create' || vm.currentState =='entries.edit'" ng-class="vm.entryType">
+      <md-list-item class="md-2-line no-padding">
+        <md-icon md-svg-src="./modules/entries/client/img/{{vm.entryType}}.svg" style="width: 55px; height: 55px; margin-right: 10px; margin-top: 12px;"></md-icon>
+        <div class="md-list-item-text">
+          <h2 class="md-display-1">{{vm.eventLabels[vm.entryType]}}</h2>
+          <p>{{vm.child.firstName}} {{vm.child.lastName}}</p>
+        </div>
+      </md-list-item>
+      <md-button class="md-icon-button" ng-click="cancelEntryForm()">
+        <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+</div>

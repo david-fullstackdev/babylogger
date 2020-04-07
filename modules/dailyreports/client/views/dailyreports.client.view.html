@@ -1,0 +1,67 @@
+<section>
+  <swiper initial-slide="{{initialChildIndex}}" ng-if="isLoadedData" on-transition-end="changeSlider">
+    <slides>
+      <slide ng-repeat="child in childlist">
+        <md-toolbar class="child" ng-class="{'pink': !child.gender||child.gender==''||child.gender=='female', 'blue': child.gender=='male'}">
+          <div layout="row" layout-margin>
+            <div flex="75">
+              <md-divider class="no-line space"></md-divider>
+              <div class="md-title md-block">{{child.firstName + ' ' + child.lastName}}</div>
+            </div>
+            <div flex></div>
+            <div flex="25">
+              <img ng-src="{{ child.imageURL }}" class="circle child-photo" ng-click="navigatePage('child-landing')"/>
+            </div>
+          </div>
+        </md-toolbar>
+        <div layout="row" layout-margin style="margin-top: 0;">
+          <div flex>
+            <div class="md-subhead md-block">{{getAgeOfBirth(child.birthDay)}}</div>
+          </div>
+        </div>
+      </slide>
+    </slides>
+  </swiper>
+  <md-content>
+    <swiper initial-slide="{{dateSlideIndex}}" ng-if="isLoadedData" on-transition-end="changeReportDate">
+      <slides>
+        <slide ng-repeat="item in reportDates">
+          <div layout="row" layout-margin>
+            <md-divider class="no-line space"></md-divider>
+            <div flex="100" layout-align="center center" class="center daily-report-date">{{item.date | date: 'MMM d, yyyy'}}</div>
+            <md-divider class="no-line space"></md-divider>
+          </div>
+          <md-divider class="space-sm"></md-divider>
+          <md-list class="daily-list">
+            <md-list-item ng-repeat="item in reportList" ng-class="{'has-note': item.note}" ng-click="editEntry($event, item)" class="daily-item">
+              <div flex="30">{{item.date | date: 'hh:mm a'}}</div>
+              <div flex="10">
+                <span ng-class="{'blue-circle': item.type=='awake' || item.type=='asleep', 'green-circle': item.type=='bottle' || item.type=='solidfood', 'gold-circle': item.type=='wet', 'orange-circle': item.type=='dirty', 'purple-circle': item.type=='nursing' || item.type=='pumping', 'red-circle': item.type=='miscellaneous'}"></span>
+              </div>
+              <div flex="65">
+                <md-button ng-if="item.error" ng-click="showWarning(item)" style="min-width: 15px; padding: 0; margin: 0;">
+                  <md-icon md-font-set="material-icons" class="warning-icon"> warning </md-icon>
+                </md-button>
+                {{typeLabels[item.type]}}
+                <span ng-if="item.duration"> ({{item.duration}})</span>
+                <span ng-if="item.type=='bottle'">({{item.contents}}, {{item.quantity}} oz)</span>
+                <span ng-if="item.type=='pumping'">({{item.totalQuantity}} oz) Last: {{item.last}}</span>
+                <span ng-if="item.type=='nursing'">({{item.totalDuration}}) Last: {{item.last}}</span>
+                <p class="md-body-1" ng-if="item.note">
+                  <md-icon md-font-set="material-icons">description</md-icon> {{item.note}}
+                </p>
+              </div>
+            </md-list-item>
+          </md-list>
+        </slide>
+      </slides>
+    </swiper>
+  </md-content>
+  <md-divider class="space-sm"></md-divider>
+  <!--<div layout="row" layout-margin>
+    <md-button class="md-fab md-mini" ng-click="openBottomSheet()">
+      <md-icon md-font-set="material-icons"> launch </md-icon>
+    </md-button>
+    <p class="md-subhead" style="line-height: 40px;">Share</p>
+  </div>-->
+</section>

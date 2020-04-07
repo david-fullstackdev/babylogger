@@ -1,0 +1,181 @@
+<section>
+  <swiper initial-slide="{{initialChildIndex}}" ng-if="isLoadedData" on-transition-end="changeSlider">
+    <slides>
+      <slide ng-repeat="child in childlist">
+        <md-toolbar class="child" ng-class="{'pink': !child.gender||child.gender==''||child.gender=='female', 'blue': child.gender=='male'}">
+          <div layout="row" layout-margin>
+            <div flex="75">
+              <md-divider class="no-line space"></md-divider>
+              <div class="md-title md-block">{{child.firstName + ' ' + child.lastName}}</div>
+            </div>
+            <div flex></div>
+            <div flex="25">
+              <img ng-src="{{ child.imageURL }}" class="circle child-photo" ng-click="navigatePage('child-landing')"/>
+            </div>
+          </div>
+        </md-toolbar>
+        <div layout="row" layout-margin style="margin-top: 0;">
+          <div flex>
+            <div class="md-subhead md-block">{{getAgeOfBirth(child.birthDay)}}</div>
+          </div>
+        </div>
+      </slide>
+    </slides>
+  </swiper>
+  <form layout="row" layout-wrap layout-padding class="summary-form">
+    <md-input-container flex="100" class="p-0">
+      Pediatrician Summary
+    </md-input-container>
+    <md-divider flex="100" class="no-line"></md-divider>
+    <md-input-container class="datepicker-height">
+      <md-datepicker ng-model="startDate" md-placeholder="Enter date" ng-change="calculateSummary(child)"></md-datepicker>
+    </md-input-container>
+    <!--<div flex class="center">to</div>-->
+    <md-input-container class="datepicker-height">
+      <md-datepicker ng-model="endDate" md-placeholder="Enter date" ng-change="calculateSummary(child)"></md-datepicker>
+    </md-input-container>
+  </form>
+  <md-list layout="row" layout-padding layout-margin style="margin-left: 0; padding-left: 0;">
+    <md-list-item flex="50">
+      <div style="width: 60px;">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #FECA4B;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/diaper1.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.wet.day + child.wet.feed.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.wet.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.wet.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #FECA4B;"></md-divider>
+    </md-list-item>
+
+    <md-list-item flex="50">
+      <div style="width: 60px">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #FEAB73;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/diaper2.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.dirty.day + child.summary.dirty.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.dirty.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.dirty.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #FEAB73;"></md-divider>
+    </md-list-item>
+  </md-list>
+  <md-list layout="row" layout-padding layout-margin style="margin-left: 0; padding-left: 0;">
+    <md-list-item flex="50">
+      <div style="width: 60px;">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #AB5ABD;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/nursing.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.nursing.day + child.summary.nursing.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.nursing.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.nursing.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #AB5ABD;"></md-divider>
+      <div class="clear"></div>
+      <p class="font-11" style="position: absolute; bottom: -20px; left: 35px;">Avg Session: {{child.summary.nursing.avgLength}}</p>
+    </md-list-item>
+
+    <md-list-item flex="50">
+      <div style="width: 60px">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #67C36B;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/spoon.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.solidfood.day + child.summary.solidfood.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.solidfood.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.solidfood.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #67C36B;"></md-divider>
+    </md-list-item>
+  </md-list>
+  <md-list layout="row" layout-padding layout-margin style="margin-bottom: 25px; margin-left: 0; padding-left: 0;">
+    <md-list-item flex="50">
+      <div style="width: 60px;">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #AB5ABD;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/pump.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.pumping.day + child.summary.pumping.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.pumping.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.pumping.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #AB5ABD;"></md-divider>
+      <p class="font-11" style="position: absolute; bottom: -20px; left: 35px;">Avg Session: {{child.summary.pumping.avgLength}}</p>
+      <p class="font-11" style="position: absolute; bottom: -45px; left: 35px;">Avg Per Day: {{child.summary.pumping.avgQuantity}} oz</p>
+    </md-list-item>
+
+    <md-list-item flex="50">
+      <div style="width: 60px">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #67C36B;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/bottle.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.bottle.day + child.summary.bottle.night}}</p>
+      </div>
+      <div flex class="text-right">
+        <p class="no-margin font-11">{{child.summary.bottle.day}} day</p>
+        <p class="no-margin font-11">{{child.summary.bottle.night}} night</p>
+      </div>
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #67C36B;"></md-divider>
+      <p class="font-11" style="position: absolute; bottom: -20px; left: 35px;">Avg Bottle: 4.25 oz</p>
+      <p class="font-11" style="position: absolute; bottom: -45px; left: 35px;">Avg Per Day: {{child.summary.bottle.avgQuantity}} oz</p>
+    </md-list-item>
+  </md-list>
+  <md-list layout="row" layout-padding layout-margin layout-align="center center" style="margin-left: 0; padding-left: 0;">
+    <md-list-item flex="70">
+      <div style="width: 60px">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #45B2FF;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/sleep.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.sleep.total_avg}}</p>
+      </div>
+
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #45B2FF;"></md-divider>
+      <p class="font-11" style="position: absolute; bottom: -20px; left: 35px;">{{child.summary.sleep.day_avg}} day {{child.summary.sleep.night_avg}} night</p>
+    </md-list-item>
+  </md-list>
+  <md-list layout="row" layout-padding layout-margin layout-align="center center" style="margin-bottom: 35px; margin-left: 0; padding-left: 0;">
+    <md-list-item flex="70">
+      <div style="width: 60px">
+        <md-button class="md-fab md-primary summary-entry-btn" style="border: 3px solid #E187AD;">
+          <md-icon md-svg-src="./modules/childs/client/img/icons/miscellaneous.svg"></md-icon>
+        </md-button>
+      </div>
+      <div flex>
+        <p class="md-display-1 no-margin text-center">{{child.summary.miscellaneous.day + child.summary.miscellaneous.night}}</p>
+      </div>
+
+      <md-divider class="space-sm summary-entry-divider" style="background-color: #E187AD;"></md-divider>
+      <p class="font-11" style="position: absolute; bottom: -20px; left: 35px;">{{child.summary.miscellaneous.day}} day {{child.summary.miscellaneous.night}} night</p>
+      <p class="font-11" style="position: absolute; bottom: -45px; left: 35px;">Default label: {{child.miscellaneous}}</p>
+
+    </md-list-item>
+  </md-list>
+  <!--<div layout="row" layout-margin>
+    <md-button class="md-fab md-mini" ng-click="openBottomSheet()">
+      <md-icon md-font-set="material-icons"> launch </md-icon>
+    </md-button>
+    <p class="md-subhead" style="line-height: 40px;">Share</p>
+  </div>-->
+</section>

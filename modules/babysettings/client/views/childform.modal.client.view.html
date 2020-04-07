@@ -1,0 +1,149 @@
+<md-dialog layout-fill>
+  <form name="childForm" ng-submit="save(childForm.$valid)" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-padding class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>First Name</md-select-label>
+        <input id="firstName" name="firstName" ng-model="child.firstName" required>
+        <div ng-messages="childForm.firstName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">First name is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Last Name</md-select-label>
+        <input id="lastName" name="lastName" ng-model="child.lastName" required>
+        <div ng-messages="childForm.lastName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Last name is required.</p>
+        </div>
+      </md-input-container>
+      <label class="md-block">Date of Birth</label>
+      <div class="md-block" >
+        <md-input-container>
+          <md-select ng-model="month" ng-change="changeMonth()">
+            <md-option ng-repeat="item in months" ng-value="$index+1">
+              {{item}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <md-select ng-model="date">
+            <md-option ng-repeat="item in dates" ng-value="item">
+              {{item}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container>
+          <md-select ng-model="year">
+            <md-option ng-repeat="item in years" ng-value="item">
+              {{item}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <label class="md-block">Gender</label>
+      <div class="md-block" >
+        <md-radio-group ng-model="child.gender">
+          <md-radio-button value="female">Female</md-radio-button>
+          <md-radio-button value="male">Male</md-radio-button>
+        </md-radio-group>
+      </div>
+      <div class="md-block">
+        <p><strong>Image</strong></p>
+        <p class="md-caption">Ideal size is 200 x 200 px. Drag yellow circle to position photo.</p>
+        <input type="hidden" ng-model="child.imageURL">
+        <div class="image-container">
+          <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
+            <img-crop ng-show="fileSelected" image="picFile | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+            <img ng-src="{{child.imageURL}}" style="margin-top: 86px; margin-left: 86px;">
+          </div>
+        </div>
+
+        <md-button ng-show="!fileSelected" class="md-raised block-btn" ngf-select="fileSelected = true" ng-model="picFile" accept="image/*">Add Photo</md-button>
+        <md-button ng-show="fileSelected" class="md-raised md-warn block-btn" ng-click="upload(croppedDataUrl, picFile.name)">Upload</md-button>
+        <md-progress-linear ng-show="fileSelected" md-mode="determinate" value="{{progress}}"></md-progress-linear>
+      </div>
+      <md-divider class="no-line"></md-divider>
+      <div class="md-block">
+        <p><strong>Day and Night Settings</strong></p>
+        <p class="md-caption">Some reports group activities by day and night. Select what times you'd like day and night to begin in reports for this child.</p>
+      </div>
+      <md-input-container>
+        <md-select-label>Day begins at</md-select-label>
+        <div class="md-block" >
+          <md-input-container>
+            <md-select ng-model="day_hour">
+              <md-option ng-repeat="item in hours" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select ng-model="day_minute">
+              <md-option ng-repeat="item in minutes" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select ng-model="day_type">
+              <md-option ng-repeat="item in time_type" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Night begins at</md-select-label>
+        <div class="md-block" >
+          <md-input-container>
+            <md-select ng-model="night_hour">
+              <md-option ng-repeat="item in hours" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select ng-model="night_minute">
+              <md-option ng-repeat="item in minutes" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container>
+            <md-select ng-model="night_type">
+              <md-option ng-repeat="item in time_type" ng-value="item">
+                {{item}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </md-input-container>
+      <md-divider class="no-line"></md-divider>
+      <div class="md-block">
+        <strong>Miscellaneous Button</strong>
+      </div>
+      <md-input-container class="miscellaneous-input-container">
+        <input id="miscellaneous" name="miscellaneous" ng-model="child.miscellaneous">
+      </md-input-container>
+      <p class="md-caption mt-5">Enter the specific event or activity you want to track with the "Miscellaneous" button on your device and app.</p>  
+      <md-divider class="no-line"></md-divider>
+      <md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-raised md-rounded" ng-click="cancel()" ng-disabled="isLoading">Cancel</md-button>
+        <md-button class="md-raised md-warn md-rounded" ng-click="removeChild($event)" ng-disabled="isLoading" ng-if="child._id">Remove Child</md-button>
+      </md-input-container>
+    </md-dialog-content>
+  </form>
+</md-dialog>

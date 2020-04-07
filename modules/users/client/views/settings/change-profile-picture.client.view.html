@@ -1,0 +1,25 @@
+<section>
+  <div layout="row" layout-align="center center">
+    <form class="signin form-horizontal">
+      <div ng-show="vm.fileSelected" class="text-center form-group">
+        <p>Crop your picture then press upload below:</p>
+        <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
+          <img-crop image="picFile | ngfDataUrl" result-image="croppedDataUrl" ng-init="croppedDataUrl=''"></img-crop>
+        </div>
+      </div>
+      <div class="form-group text-center">
+        <img ng-src="{{vm.fileSelected ? croppedDataUrl : vm.user.profileImageURL}}" alt="{{vm.user.displayName}}" class="img-thumbnail user-profile-picture" ngf-drop>
+      </div>
+      <div ng-show="!vm.fileSelected" class="text-center form-group">
+        <md-button class="md-raised md-primary" ngf-select="vm.fileSelected = true" ng-model="picFile" accept="image/*" ngf-capture="'camera'">Select Picture</md-button>
+      </div>
+      <div ng-show="vm.fileSelected" class="text-center form-group">
+        <md-button class="md-raised md-warn" ng-click="vm.upload(croppedDataUrl, picFile.name)">Upload</md-button>
+        <md-button class="md-raised" ng-click="vm.fileSelected = false">Cancel</md-button>
+      </div>
+      <div ng-show="vm.fileSelected" class="progress text-center">
+        <md-progress-linear ng-show="vm.fileSelected" md-mode="determinate" value="{{vm.progress}}"></md-progress-linear>
+      </div>
+    </form>
+  </div>
+</section>

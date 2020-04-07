@@ -1,0 +1,75 @@
+<section>
+  <img src="http://placehold.it/350x150" layout-align="center center" />
+  <form name="vm.userForm" ng-cloak layout="column" layout-padding name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" novalidate>
+    <p>Welcome! It looks like you need to set things up for your new device.</p>
+    <h4>Device ID: {{vm.deviceId}}</h4>
+    <p>First, let's set up a user account for you.</p>
+    <p>Already have an account? <a href="/authentication/signin">Sign in</a></p>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>First Name</md-select-label>
+        <input type="text" id="firstName" name="firstName" ng-model="vm.credentials.firstName" required autofocus>
+        <div ng-messages="vm.userForm.firstName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">First name is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Last Name</md-select-label>
+        <input type="text" id="lastName" name="lastName" ng-model="vm.credentials.lastName" required>
+        <div ng-messages="vm.userForm.lastName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Last name is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Email</md-select-label>
+        <input type="email" id="email" name="email" ng-model="vm.credentials.email" lowercase required>
+        <div ng-messages="vm.userForm.email.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Email address is required.</p>
+          <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Username</md-select-label>
+        <input type="text" id="username" name="username" ng-model="vm.credentials.username" lowercase required>
+        <div ng-messages="vm.userForm.username.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Username is required.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Password</md-select-label>
+        <input type="password" id="password" name="password" ng-model="vm.credentials.password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
+        <div ng-messages="vm.userForm.password.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Password is required.</p>
+          <div ng-repeat="passwordError in passwordErrors">
+            <p class="help-block error-text" ng-show="vm.userForm.password.$error.requirements">{{passwordError}}</p>
+          </div>
+        </div>
+        <p class="md-caption">Passwords must be at least 6 characters and include either a number or special character. Passwords are case sensitive.</p>
+      </md-input-container>
+    </div>
+    <div class="form-group" show-errors>
+      <md-input-container class="md-block">
+        <md-select-label>Confirm Password</md-select-label>
+        <input type="password" id="confirmPassword" name="confirmPassword" ng-model="vm.credentials.confirmPassword" password-verify="vm.credentials.password" required>
+        <div ng-messages="vm.userForm.confirmPassword.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Enter the password again to verify.</p>
+          <p class="help-block error-text" ng-show="vm.userForm.confirmPassword.$error.passwordVerify">Passwords do not match.</p>
+        </div>
+      </md-input-container>
+    </div>
+    <md-input-container>
+      <md-button type="submit" class="md-raised md-primary">Save</md-button>
+    </md-input-container>
+
+  </form>
+</section>
+
+<md-divider class="space no-line"></md-divider>

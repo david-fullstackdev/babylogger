@@ -1,0 +1,54 @@
+<md-dialog layout-fill>
+  <form name="userProfileForm" ng-submit="save(userProfileForm.$valid)" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-padding class="form-group" show-errors>
+      <md-input-container>
+        <md-select-label>First Name</md-select-label>
+        <input name="firstName" ng-model="user.firstName" class="form-control" required autofocus>
+        <div ng-messages="userProfileForm.firstName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">First name is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Last Name</md-select-label>
+        <input name="lastName" ng-model="user.lastName" required>
+        <div ng-messages="userProfileForm.lastName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Last name is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Email</md-select-label>
+        <input name="email" type="email" ng-model="user.email" lowercase required>
+        <div ng-messages="userProfileForm.email.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Email address is required.</p>
+          <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Username</md-select-label>
+        <input name="username" ng-model="user.username" lowercase required>
+        <div ng-messages="userProfileForm.username.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Username is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-raised md-rounded" ng-click="cancel()" ng-disabled="isLoading">Cancel</md-button>
+      </md-input-container>
+      <md-input-container>
+        <md-button class="md-primary" ng-click="resetPrimaryUserPwd($event)">Reset Password</md-button>
+      </md-input-container>
+    </md-dialog-content>
+  </form>
+</md-dialog>

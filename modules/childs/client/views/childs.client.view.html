@@ -1,0 +1,182 @@
+<section class="child-landing">
+  <swiper initial-slide="{{initialChildIndex}}" ng-if="isLoadedData" on-transition-end="changeSlider">
+    <slides>
+      <slide ng-repeat="child in childlist">
+        <md-toolbar class="child" ng-class="{'pink': !child.gender||child.gender==''||child.gender=='female', 'blue': child.gender=='male'}">
+          <div layout="row" layout-margin>
+            <div flex="75">
+              <md-divider class="no-line space"></md-divider>
+              <div class="md-title md-block">{{child.firstName + ' ' + child.lastName}}</div>
+            </div>
+            <div flex></div>
+            <div flex="25">
+              <img ng-src="{{ child.imageURL }}" class="circle child-photo" />
+            </div>
+          </div>
+        </md-toolbar>
+        <div layout="row" layout-margin style="margin-top: 0;">
+        <div flex>
+          <div class="md-subhead md-block">{{getAgeOfBirth(child.birthDay)}}</div>
+          <!--<md-divider class="no-line space"></md-divider>-->
+        </div>
+        </div>
+      </slide>
+    </slides>
+  </swiper>
+  <div layout="row" layout-margin>
+    <div flex class="no-margin">
+      <md-divider></md-divider>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=nursing&childIndex={{initialChildIndex}}" style="border: 3px solid #AB5ABD;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/nursing.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['nursing'])" ng-if="child.entries['nursing']">
+          <p class="md-small-label no-margin">{{child.entries['nursing'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['nursing'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['nursing'].totalDuration}}</p>
+          <p class="md-small-label no-margin">Last: {{child.entries['nursing'].last}}</p>
+        </div>
+      </div>
+    </div>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=pumping&childIndex={{initialChildIndex}}" style="border: 3px solid #AB5ABD;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/pump.svg" style="margin-top: 8px;"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['pumping'])" ng-if="child.entries['pumping']">
+          <p class="md-small-label no-margin">{{child.entries['pumping'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['pumping'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['pumping'].totalQuantity}} oz</p>
+          <p class="md-small-label no-margin">Last: {{child.entries['pumping'].last}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex class="no-margin">
+      <md-divider></md-divider>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=bottle&childIndex={{initialChildIndex}}" style="border: 3px solid #67C36B;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/bottle.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['bottle'])" ng-if="child.entries['bottle']">
+          <p class="md-small-label no-margin">{{child.entries['bottle'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['bottle'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['bottle'].quantity}} oz</p>
+          <p class="md-small-label no-margin">{{child.entries['bottle'].contents}}</p>
+        </div>
+      </div>
+    </div>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=solidfood&childIndex={{initialChildIndex}}" style="border: 3px solid #67C36B;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/spoon.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['solidfood'])">
+          <p class="md-small-label no-margin">{{child.entries['solidfood'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['solidfood'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-small-label no-margin ellipsis-text">{{child.entries['solidfood'].note || "&nbsp;"}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex class="no-margin">
+      <md-divider></md-divider>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="diaper-1 action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=wet&childIndex={{initialChildIndex}}" style="border: 3px solid #FECA4B;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/diaper1.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['wet'])">
+          <p class="md-small-label no-margin">{{child.entries['wet'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['wet'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-small-label no-margin" ng-if="child.entries['wet']">Wet</p>
+        </div>
+      </div>
+    </div>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="diaper-1 action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=dirty&childIndex={{initialChildIndex}}" style="border: 3px solid #FEAB73;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/diaper2.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['dirty'])">
+          <p class="md-small-label no-margin">{{child.entries['dirty'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['dirty'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-small-label no-margin" ng-if="child.entries['dirty']">Dirty</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex class="no-margin">
+      <md-divider></md-divider>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="sleep action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=asleep&childIndex={{initialChildIndex}}" style="border: 3px solid #45B2FF;" ng-if="!child.entries['asleep'] || (child.entries['asleep'] && child.entries['awake'])">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/sleep.svg"></md-icon>
+          </md-button>
+          <md-button class="md-fab md-primary child-entry-btn" ng-click="editEntry($event, child.entries['asleep'])" style="border: 3px solid #45B2FF;" ng-if="child.entries['asleep'] && !child.entries['awake']">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/sleep.svg" style="margin-top: 0 !important;"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['asleep'])">
+          <p class="md-normal-label no-margin" ng-if="child.entries['asleep'] && !child.entries['awake']">Currently asleep</p>
+          <p class="md-small-label no-margin" ng-if="child.entries['asleep'] && !child.entries['awake']">since</p>
+          <p class="md-normal-label no-margin" ng-if="child.entries['asleep'] && !child.entries['awake']">{{child.entries['asleep'].logDate | date: 'MM/dd/yyyy h:mm a'}}</p>
+          <p class="md-small-label no-margin" ng-if="child.entries['awake']">{{child.entries['asleep'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin" ng-if="child.entries['awake']">{{child.entries['asleep'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-small-label no-margin" ng-if="child.entries['awake']">{{child.entries['awake'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin" ng-if="child.entries['awake']">{{child.entries['awake'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-small-label no-margin" ng-if="child.entries.showSleepDuration">{{child.entries.sleepDuration}}</p>
+        </div>
+      </div>
+    </div>
+    <div flex="50" class="no-margin">
+      <div layout="row" layout-margin class="miscellaneous action no-margin">
+        <div style="width: 80px">
+          <md-button class="md-fab md-primary child-entry-btn" ng-href="/entries/{{child._id}}/create?type=miscellaneous&childIndex={{initialChildIndex}}" style="border: 3px solid #E187AD;">
+            <md-icon md-svg-src="./modules/childs/client/img/icons/miscellaneous.svg"></md-icon>
+          </md-button>
+        </div>
+        <div flex class="cursor-pointer no-margin event-label" ng-click="editEntry($event, child.entries['miscellaneous'])">
+          <p class="md-small-label no-margin">{{child.entries['miscellaneous'].logDate | date: 'MM/dd/yyyy'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['miscellaneous'].logDate | date: 'h:mm a'}}</p>
+          <p class="md-normal-label no-margin">{{child.entries['miscellaneous'].miscellaneousLabel || child.miscellaneous}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout="row" layout-margin>
+    <div flex class="no-margin">
+      <md-divider></md-divider>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+<md-dialog>
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons" ng-click="cancel()"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <p>{{content}}</p>
+        <p>{{subContent}}</p>
+        <div layout="row" layout-margin>
+          <md-button class="md-raised md-primary" ng-click="hide()">{{button1}}</md-button>
+          <md-button class="md-raised" ng-click="cancel()">{{button2}}</md-button>
+        </div>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

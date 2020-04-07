@@ -1,0 +1,95 @@
+<md-dialog layout-fill>
+  <form name="associateUserForm" ng-submit="save(associateUserForm.$valid)" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{title}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon aria-label="Close dialog" md-font-set="material-icons"> close </md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content layout="column" layout-padding class="form-group" show-errors>
+      <md-input-container>
+        <md-select-label>First Name</md-select-label>
+        <input name="firstName" ng-model="associatedUser.firstName" required autofocus>
+        <div ng-messages="associateUserForm.firstName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">First name is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Last Name</md-select-label>
+        <input name="lastName" ng-model="associatedUser.lastName" required>
+        <div ng-messages="associateUserForm.lastName.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Last name is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Email</md-select-label>
+        <input name="email" type="email" ng-model="associatedUser.email" lowercase required>
+        <div ng-messages="associateUserForm.email.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Email address is required.</p>
+          <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>Username</md-select-label>
+        <input name="username" ng-model="associatedUser.username" lowercase required>
+        <div ng-messages="associateUserForm.username.$error" role="alert">
+          <p class="help-block error-text" ng-message="required">Username is required.</p>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <md-select-label>User Role</md-select-label>
+        <md-select ng-model="associatedUser.roles" name="role" id="role">
+          <md-option value="user">Admin</md-option>
+          <md-option value="associate">Data Entry & Reports Only</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container ng-show="associatedUser.roles=='associate'">
+        <md-select-label>Child(ren) assigned to this user</md-select-label>
+      </md-input-container>
+      <md-input-container ng-repeat="child in childs" ng-show="associatedUser.roles=='associate'">
+        <md-checkbox class="md-block" ng-model="child.isSelected" aria-label="">
+          {{child.firstName + ' ' + child.lastName}}
+        </md-checkbox>
+      </md-input-container>
+      <md-divider class="no-line"></md-divider>
+      <!--<div class="md-block">
+        <strong>Reporting Time Zone</strong>
+        <p class="md-caption">
+          Select the time zone you want to use for all reports for this child.
+        </p>
+      </div>
+      <md-divider class="no-line"></md-divider>
+      <md-input-container>
+        <md-select ng-model="associatedUser.country">
+          <md-option ng-value="item.code" ng-repeat="item in countries">{{item.country}}</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container>
+        <md-select ng-model="associatedUser.timezone">
+          <md-optgroup label="{{group.text}}" ng-repeat="group in timezone_list">
+            <md-option ng-value="item.id" ng-repeat="item in group.children">{{item.name + ' (' + item.offset + ')'}}</md-option>
+          </md-optgroup>
+        </md-select>
+      </md-input-container>
+      <md-divider class="no-line"></md-divider>-->
+      <p class="md-caption">When you click "Save," Baby Logger will email this user their username and a temporary password. They will be asked to login and change the password.</p>
+      <md-input-container>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="isLoading">
+          <md-progress-circular ng-hide="!isLoading" class="md-hue-2 button-loader" md-diameter="20px"></md-progress-circular>
+          Save
+        </md-button>
+        <md-button class="md-raised md-rounded" ng-click="cancel()" ng-disabled="isLoading">Cancel</md-button>
+      </md-input-container>
+      <md-input-container ng-show="associatedUser._id">
+        <md-button class="md-primary" ng-click="resetAssociatedUserPwd($event)">Reset Password</md-button>
+      </md-input-container>
+      <md-input-container ng-show="associatedUser._id">
+        <md-button class="md-warn" ng-click="deleteAssociatedUser($event)">Delete this user</md-button>
+      </md-input-container>
+      <br>
+    </md-dialog-content>
+  </form>
+</md-dialog>
